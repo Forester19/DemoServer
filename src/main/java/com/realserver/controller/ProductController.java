@@ -2,6 +2,8 @@ package com.realserver.controller;
 
 import com.realserver.exceptions.NotFoundException;
 import com.realserver.model.Product;
+import com.realserver.model.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -10,18 +12,19 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("products")
-public class MainController {
-    public List<Product> listProducts = new ArrayList<Product>() {{
-        add(new Product(1, "fewfw1", "wefwf", 100));
-        add(new Product(2, "uswefwefer2", "pawefwefssword1", 200));
-        add(new Product(3, "uswefwefwer3", "passwwefweford1", 300));
-        add(new Product(4, "uswewefer4", "passwefwfword1", 400));
-        add(new Product(5, "uswefwer5", "passwweford1", 500));
-    }};
+public class ProductController {
+
+    @Autowired
+    ProductRepository productRepository;
+    private ArrayList<Product> listProducts = new ArrayList<>();
+
+    public ProductController() {
+    }
 
     @GetMapping
     public List<Product> getProducts() {
-        return listProducts;
+        System.out.println("get products ");
+        return (List<Product>) productRepository.findAll();
     }
 
     @GetMapping("{id}")
@@ -31,9 +34,8 @@ public class MainController {
 
     @PostMapping
     public List<Product> addProduct(@RequestBody Product product) {
-        product.setId(createId());
-        listProducts.add(product);
-        return listProducts;
+        productRepository.save(product);
+        return (List<Product>) productRepository.findAll();
     }
 
     @PutMapping("{id}")

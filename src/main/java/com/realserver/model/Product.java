@@ -1,18 +1,30 @@
 package com.realserver.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.awt.*;
 import java.util.Objects;
 
+@Entity
 public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String title;
     private String description;
     private int price;
+    private String image;
 
-    public Product(int id, String title, String description, int price) {
-        this.id = id;
+    public Product(String title, String description, int price, String image) {
         this.title = title;
         this.description = description;
         this.price = price;
+        this.image = image;
+    }
+
+    public Product() {
     }
 
     public int getId() {
@@ -46,7 +58,13 @@ public class Product {
         this.price = price;
     }
 
+    public String getImage() {
+        return image;
+    }
 
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     @Override
     public boolean equals(Object o) {
