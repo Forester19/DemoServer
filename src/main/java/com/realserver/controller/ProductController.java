@@ -1,12 +1,12 @@
 package com.realserver.controller;
 
-import com.realserver.exceptions.NotFoundException;
 import com.realserver.model.Product;
-import com.realserver.model.ProductRepository;
+import com.realserver.repo.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import javax.annotation.PostConstruct;
+import java.util.Iterator;
 import java.util.List;
 
 @RestController
@@ -15,22 +15,29 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    ProductRepository productRepository;
-    private ArrayList<Product> listProducts = new ArrayList<>();
+   private ProductRepository productRepository;
 
-    public ProductController() {
+    @PostConstruct
+    public void init() {
+
     }
 
     @GetMapping
-    public List<Product> getProducts() {
-        System.out.println("get products ");
-        return (List<Product>) productRepository.findAll();
+    public Iterable<Product> getProducts() {
+        System.out.println("start");
+        for(Object o : productRepository.findAll() ){
+            System.out.println((Product)o);
+        }
+        System.out.println("end");
+        return productRepository.findAll();
     }
+/*
 
     @GetMapping("{id}")
     public Product getProduct(@PathVariable int id) {
         return getProductById(id);
     }
+*/
 
     @PostMapping
     public List<Product> addProduct(@RequestBody Product product) {
@@ -38,7 +45,7 @@ public class ProductController {
         return (List<Product>) productRepository.findAll();
     }
 
-    @PutMapping("{id}")
+    /*@PutMapping("{id}")
     public List<Product> updateProduct(@RequestBody Product product, @PathVariable int id) {
         Product selectedProduct = getProductById(id);
         product.setId(createId());
@@ -60,5 +67,5 @@ public class ProductController {
     private Product getProductById(int id) {
         return listProducts.stream().filter(useR -> useR.getId() == id).findFirst().orElseThrow(NotFoundException::new);
     }
-
+*/
 }
