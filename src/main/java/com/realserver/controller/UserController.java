@@ -3,6 +3,7 @@ package com.realserver.controller;
 import com.realserver.model.Role;
 import com.realserver.model.User;
 import com.realserver.repo.UserRepository;
+import com.realserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +18,11 @@ import java.util.List;
 @RequestMapping("users")
 public class UserController {
     private List<User> list = new ArrayList<>();
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
-    public UserController(UserRepository userRepository) {
-       this.userRepository = userRepository;
+    public UserController(UserService UserService) {
+       this.userService = UserService;
     }
 
     @PostConstruct
@@ -30,7 +31,7 @@ public class UserController {
 
     @GetMapping("")
     public ResponseEntity getAll() {
-        return ResponseEntity.ok(userRepository.findAll());
+        return ResponseEntity.ok(userService.getAll());
     }
 
     @PostMapping
