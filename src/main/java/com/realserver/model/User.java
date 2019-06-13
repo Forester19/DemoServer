@@ -11,24 +11,15 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-    @Column
+public class User extends BaseEntity{
+
+    @Column(name = "login")
     private String login;
-    @Column
+    @Column(name = "password")
     private String password;
-    @Column
+    @Column(name = "role")
     private Role role;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getLogin() {
         return login;

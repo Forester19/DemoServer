@@ -1,6 +1,6 @@
 package com.realserver.authentication;
 
-import com.realserver.service.UserService;
+import com.realserver.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.filter.GenericFilterBean;
 
