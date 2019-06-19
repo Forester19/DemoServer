@@ -18,9 +18,9 @@ public class UserService implements com.realserver.service.UserService {
 
 
     @Autowired
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder1) {
         this.userRepository = userRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder1;
     }
 
     @Override
@@ -29,7 +29,6 @@ public class UserService implements com.realserver.service.UserService {
         user.setStatus(Status.ACTIVE);
 
         User registeredUser = userRepository.save(user);
-        log.info();
         return user;
     }
 
@@ -38,8 +37,8 @@ public class UserService implements com.realserver.service.UserService {
     }
 
     @Override
-    public User findByUserName() {
-        return null;
+    public User findByUserName(String userName) {
+         return userRepository.findByUserName(userName);
     }
 
     @Override
