@@ -3,7 +3,7 @@ package com.realserver.security;
 import com.realserver.model.User;
 import com.realserver.security.jwt.JwtUser;
 import com.realserver.security.jwt.JwtUserFactory;
-import com.realserver.service.UserService;
+import com.realserver.service.impl.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,12 +15,8 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class JwtUserDetailsService implements UserDetailsService {
 
-    private final UserService userService;
-
     @Autowired
-    public JwtUserDetailsService(UserService userService) {
-        this.userService = userService;
-    }
+    private UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {

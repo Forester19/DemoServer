@@ -1,40 +1,60 @@
 package com.realserver.controller;
 
+import com.realserver.model.SimpleUser;
 import com.realserver.model.User;
 import com.realserver.model.dto.AuthenticationRequestDto;
 import com.realserver.security.jwt.JwtTokenProvider;
-import com.realserver.service.UserService;
+import com.realserver.service.impl.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "log-in")
+@RequestMapping(value = "*")
 @CrossOrigin(origins = "*")
 public class AuthenticationRestController {
-
-    private final AuthenticationManager authenticationManger;
-
-    private final JwtTokenProvider jwtTokenProvider;
 
     private final UserService userService;
 
     @Autowired
-    public AuthenticationRestController(AuthenticationManager authenticationManger, JwtTokenProvider jwtTokenProvider, UserService userService) {
-        this.authenticationManger = authenticationManger;
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.userService = userService;
+    public AuthenticationRestController(UserService userService) {
+         this.userService = userService;
     }
 
+    @GetMapping
+    public ResponseEntity get(){
+        Map<Object,Object> response = new HashMap<>();
+        response.put("username", "username");
+        response.put("token", "some token");
+        return ResponseEntity.ok(response);
+    }
+
+    @RequestMapping(value = "log-in")
+    @PostMapping
+    public SimpleUser postLogIn(@RequestBody SimpleUser userFromClient){
+        System.out.println( "query from client user:" + userFromClient.toString());
+        if(userFromClient.getLogin().equals("aaa") && userFromClient.getPassword().equals("aaa")){
+            System.out.println("return valid user");
+            return userFromClient;
+        }
+        return new SimpleUser();
+    }
+
+    @RequestMapping(value = "sign-up")
+    @PostMapping
+    public SimpleUser postSignUp(@RequestBody SimpleUser userFromClient){
+        System.out.println("Got query from client user:" + userFromClient.toString());
+        User userFromDBuserService = userService.register(new User(userFromClient.getLogin(), userFromClient.getPassword()));
+        return new SimpleUser(userFromDBuserService.getUsername(), userFromDBuserService.getPassword());
+    }
+
+   /* @PostMapping
     public ResponseEntity logIn(@RequestBody AuthenticationRequestDto authenticationRequestDto){
         String username = authenticationRequestDto.getUsername();
         authenticationManger.authenticate(new UsernamePasswordAuthenticationToken(username, authenticationRequestDto.getPassword()));
@@ -50,5 +70,5 @@ public class AuthenticationRestController {
         response.put("username", username);
         response.put("token", token);
      return  ResponseEntity.ok(response);
-    }
+    }*/
 }

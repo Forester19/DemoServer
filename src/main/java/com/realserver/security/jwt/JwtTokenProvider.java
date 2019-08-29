@@ -26,9 +26,11 @@ public class JwtTokenProvider {
     @Value("${jwt.token.expired}")
     private long validityInMilliSecs;
 
-    @Qualifier("jwtUserDetailsService")
     @Autowired
-    private UserDetailsService userDetailsService;
+    @Qualifier("jwtUserDetailsService")
+    private  UserDetailsService userDetailsService;
+
+
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){

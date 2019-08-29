@@ -1,6 +1,7 @@
 package com.realserver.demo;
 
 import com.realserver.repo.ProductRepository;
+import com.realserver.service.impl.UserService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +11,6 @@ import java.sql.*;
 
 @Component
 public class DbTest {
-    @Autowired
-    ProductRepository productRepository;
-    @Test
-    public void testDbConnectionViaSpring(){
-        Assert.assertNotNull(productRepository.findAll());
-    }
 
     @Test
     public void testDbConnection(){
@@ -26,11 +21,10 @@ public class DbTest {
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/RealServer?useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC","root","Forester21");
             statement = connection.createStatement();
-            resultSet = statement.executeQuery("select * from products");
 
-            if(resultSet.next()){
-                Assert.assertNotNull(resultSet.getString(2));
-            }
+            statement.executeUpdate("insert into users values (1,'test','test','USER',null,'ACTIVE','test',null)");
+
+
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {

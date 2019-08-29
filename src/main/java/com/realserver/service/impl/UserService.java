@@ -1,5 +1,6 @@
 package com.realserver.service.impl;
 
+import com.realserver.model.Role;
 import com.realserver.model.Status;
 import com.realserver.model.User;
 import com.realserver.repo.UserRepository;
@@ -12,41 +13,37 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class UserService implements com.realserver.service.UserService {
-    private UserRepository userRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
-
+public class UserService{
     @Autowired
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder1) {
-        this.userRepository = userRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder1;
-    }
+    private UserRepository userRepository;
+    @Autowired
+    private  BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Override
+
     public User register(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setStatus(Status.ACTIVE);
+        user.setRole(Role.USER);
+        user.setFirstName("");
+        user.setLastName("");
+        user.setEmail("");
 
-        User registeredUser = userRepository.save(user);
+       User registeredUser = userRepository.save(user);
         return user;
     }
 
     public List<User> getAll(){
-        return userRepository.findAll();
+       return userRepository.findAll();
     }
 
-    @Override
     public User findByUserName(String userName) {
-         return userRepository.findByUserName(userName);
+        return userRepository.findByUsername(userName);
     }
 
-    @Override
     public User findById(Long id) {
         return null;
     }
 
-    @Override
     public void delete(Long id) {
 
     }

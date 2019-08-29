@@ -34,7 +34,7 @@ public class UserController {
     @PostMapping
     public User postUser(@RequestBody User user) {
         for(User userFromList: list){
-            if(user.getLogin().equals(userFromList.getLogin()) && user.getPassword().equals(userFromList.getPassword())){
+            if(user.getUsername().equals(userFromList.getUsername()) && user.getPassword().equals(userFromList.getPassword())){
                 return userFromList;
             }
         }
