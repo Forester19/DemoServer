@@ -16,6 +16,9 @@ public class CustomNode {
     private boolean isOpenTag;
 
 
+    public CustomNode() {
+    }
+
     public CustomNode(String title, Map<String, String> attributes, boolean isShortTag, boolean isOpenTag) {
         this.title = title;
         this.attributes = attributes;
